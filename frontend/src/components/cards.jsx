@@ -8,7 +8,7 @@ const DashboardCards = () => {
     return parseInt(urlParams.get("p") || "1", 10);
   });
   const {
-    data: transactions,
+    transactions,
     loading,
     error,
     total,
@@ -39,12 +39,13 @@ const DashboardCards = () => {
   const currentUser = "Surafel Araya";
 
   const incomingTransactions = transactions?.filter(
-    (tx) => tx.receiver === currentUser
+    (tx) =>
+      tx.receiver?.name === currentUser || tx.receiver?.name === tx.sender?.name
   );
   const outgoingTransactions = transactions?.filter(
-    (tx) => tx.sender === currentUser
+    (tx) =>
+      tx.receiver?.name !== currentUser || tx.receiver?.name !== tx.sender?.name
   );
-
   const totalIncoming = incomingTransactions?.reduce(
     (sum, tx) => sum + tx.amount,
     0
@@ -62,7 +63,9 @@ const DashboardCards = () => {
             <p className="text-sm font-medium text-gray-500 truncate">
               Total Transactions
             </p>
-            <p className="text-lg font-semibold text-gray-900">{total}</p>
+            <p className="text-lg font-semibold text-gray-900">
+              {total || transactions?.length}
+            </p>
           </div>
         </div>
       </div>

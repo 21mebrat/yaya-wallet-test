@@ -3,14 +3,13 @@ import { TransactionTable } from "./components/data-table";
 import { transactionColumns } from "./components/columens";
 import { useTransactions } from "./hooks/useTransactions";
 import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
-import { Loader2 } from "lucide-react";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import DashboardCards from "./components/cards";
 
 export default function App() {
   const { transactions, loading, error, setSearch } = useTransactions();
 
-  const currentUser = "Bob Smith";
+  const currentUser = "Surafel Araya";
 
   return (
     <div className="min-h-screen w-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">

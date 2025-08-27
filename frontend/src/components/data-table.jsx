@@ -73,7 +73,7 @@ export function TransactionTable({ data, columns, currentUser, onSearch }) {
 
                 return (
                   <TableRow
-                    key={tx.id || tx.transactionId}
+                    key={tx.id}
                     className={`hover:bg-gray-50 transition-colors border-l-4 ${
                       isIncoming ? "border-green-400" : "border-red-400"
                     }`}
