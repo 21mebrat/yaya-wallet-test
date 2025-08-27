@@ -29,4 +29,18 @@ A secure, responsive dashboard to monitor transactions for a YaYa Wallet account
 ---
 
 ## 🏗️ Project Structure
+frontend/ (Vite React app)
+├─ src/
+│ ├─ components/
+│ │ ├─ data-table.jsx # TransactionTable (UI only)
+│ │ ├─ columens.js # Column definitions for react-table
+│ │ └─ ui/* # shadcn/ui wrappers
+│ ├─ hooks/useTransactions.js # Data fetching + pagination + search
+│ └─ App.jsx # Main dashboard layout
+└─ .env # VITE_API_URL, VITE_CURRENT_USER_ACCOUNT
+
+backend/ (Express API proxy)
+├─ server.js # Exposes /api/transactions & /api/search
+├─ .env # YAYA_API_KEY, YAYA_API_SECRET, CURRENT_USER_ACCOUNT
+└─ package.json
 
