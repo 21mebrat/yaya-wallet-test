@@ -53,22 +53,20 @@ The dashboard provides a clean, intuitive interface to explore transactions:
 
 ## Setup & Run
 
-## 2. Backend Setup (Optional Proxy)
+## 2. clone the repo
+git clone https://github.com/21mebrat/yaya-wallet-test.git
+cd yaya-wallet-test
+
+## 2. Backend Setup
 
 1. **Navigate to the backend folder:**
 
 ```bash
 cd backend
 Install dependencies:
-
-bash
-Copy code
 npm install
 Start the server:
-
-bash
-Copy code
-npm run dev
+npm start
 Available Endpoints:
 
 Method	Endpoint	Description
@@ -78,24 +76,14 @@ POST	/transactions/search	Search transactions with { "query": "" }
 The backend handles API key signing and forwards requests to the YaYa Wallet sandbox.
 
 3. Frontend Setup
-Navigate to the frontend folder:
 
-bash
-Copy code
+Navigate to the frontend folder:
 cd frontend
 Install dependencies:
-
-bash
-Copy code
 npm install
 Start the development server:
-
-bash
-Copy code
 npm run dev
 Open the app in your browser:
-
-arduino
-Copy code
 http://localhost:5173
+
 
