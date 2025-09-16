@@ -53,14 +53,49 @@ The dashboard provides a clean, intuitive interface to explore transactions:
 
 ## Setup & Run
 
-### 1. Environment Variables
+## 2. Backend Setup (Optional Proxy)
 
-Create a `.env` file in the root of your project:
+1. **Navigate to the backend folder:**
 
-```env
-# Frontend
-VITE_BASE_URL=https://sandbox.yayawallet.com/api/en/transaction
+```bash
+cd backend
+Install dependencies:
 
-# Backend (optional proxy)
-API_KEY=key-test_13817e87-33a9-4756-82e0-e6ac74be5f77
-API_SECRET=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
+bash
+Copy code
+npm install
+Start the server:
+
+bash
+Copy code
+npm run dev
+Available Endpoints:
+
+Method	Endpoint	Description
+GET	/transactions?p=1	Fetch paginated transactions
+POST	/transactions/search	Search transactions with { "query": "" }
+
+The backend handles API key signing and forwards requests to the YaYa Wallet sandbox.
+
+3. Frontend Setup
+Navigate to the frontend folder:
+
+bash
+Copy code
+cd frontend
+Install dependencies:
+
+bash
+Copy code
+npm install
+Start the development server:
+
+bash
+Copy code
+npm run dev
+Open the app in your browser:
+
+arduino
+Copy code
+http://localhost:5173
+
