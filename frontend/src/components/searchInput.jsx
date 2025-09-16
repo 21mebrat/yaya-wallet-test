@@ -1,34 +1,35 @@
-import { Loader2, Search } from 'lucide-react'
-import React from 'react'
-import { Input } from './ui/input'
-import { useTransactions } from '@/hooks/useTransactions';
+import { Loader2, Search } from "lucide-react";
+import React from "react";
+import { Input } from "./ui/input";
+import { useTransactions } from "@/hooks/useTransactions";
 
 const SearchInput = () => {
-    const {
-        query,
-        setQuery,
-        loading,
-    } = useTransactions();
+    const { query, setQuery, loading, refetch } = useTransactions();
+
     return (
-        <div className="flex w-full flex-col sm:flex-row justify-end sm:items-center gap-3 sm:gap-4">
-            <div className="flex sm:max-w-md items-center selection:bg-primary selection:text-primary-foreground dark:bg-input/30 border-input h-9 w-full min-w-0 bg-transparent px-3 py-1 text-base shadow-xs gap-2 rounded-lg border focus-within:ring-2 focus-within:ring-blue-500 transition">
-                <Search className="text-gray-500 w-5 h-5" />
+        <div className="flex flex-col sm:flex-row w-full gap-2 sm:gap-4 items-stretch sm:items-center md:justify-end">
+            <div className="flex w-full sm:max-w-md items-center gap-2 border rounded-lg px-2 sm:px-3 py-1 bg-transparent shadow-xs h-10 sm:h-9 focus-within:ring-2 focus-within:ring-blue-500 transition">
+                <Search className="text-gray-500 w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0" />
                 <Input
                     placeholder="Search by sender, receiver, cause, or ID..."
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 text-sm sm:text-base"
+                    className="flex-1 border-none bg-transparent shadow-none focus-visible:ring-0 text-xs sm:text-sm md:text-base min-w-0"
                 />
             </div>
             <button
-                onClick={() => setQuery(query)}
-                disabled={!loading}
-                className={`px-3 py-1 cursor-pointer ${loading || !query ? "cursor-not-allowed opacity-25" : ""} rounded-lg flex items-center gap-2 bg-blue-500 text-white text-sm sm:text-base font-medium hover:bg-blue-700 transition shadow`}
+                onClick={refetch}
+                disabled={loading || !query}
+                className={`flex items-center justify-center gap-2 px-2 sm:px-3 py-2 sm:py-1 rounded-lg bg-blue-500 text-white text-xs sm:text-sm md:text-base font-medium shadow transition ${loading || !query
+                    ? "cursor-not-allowed opacity-50"
+                    : "hover:bg-blue-700 cursor-pointer"
+                    }`}
             >
-                {loading && <Loader2 size={14} className='animate-spin' />} <span>Search</span>
+                {loading && query && <Loader2 size={14} className="animate-spin" />}
+                <span>Search</span>
             </button>
         </div>
-    )
-}
+    );
+};
 
-export default SearchInput
+export default SearchInput;
