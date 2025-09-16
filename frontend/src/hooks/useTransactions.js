@@ -1,46 +1,70 @@
+import { useState, useEffect, useCallback } from "react";
 import axios from "axios";
-import { useState, useEffect } from "react";
 
-export function useTransactions(initialPage = 1, initialSearch = "") {
+export function useTransactions() {
   const [transactions, setTransactions] = useState([]);
-  const [page, setPage] = useState(initialPage);
-  const [search, setSearch] = useState(initialSearch);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [totalPages, setTotalPages] = useState(1);
-  console.log(transactions);
-
-  const fetchTransactions = async () => {
+  const [query, setQuery] = useState("");
+  const [dashboard, setDashbord] = useState({ incomingSum: 0, outgoingSum: 0, total: 0 })
+  const fetchTransactions = useCallback(async () => {
     setLoading(true);
     setError(null);
-    try {
-      let res;
-      if (search) {
-        res = await axios.post(
-          "http://127.0.0.1:8000/api/transactions/search",
-          {
-            query: search,
-          }
-        );
-      } else {
-        res = await axios.get("http://127.0.0.1:8000/api/transactions/get", {
-          params: { p: page },
-        });
-      }
 
-      setTransactions(res.data?.data || []);
-      setTotalPages(res.data?.totalPages || 1);
+    try {
+      const baseUrl = import.meta.env.VITE_BASE_URL;
+      let response;
+
+      if (query) {
+        response = await axios.post(`${baseUrl}/search`, { query });
+        console.log(response)
+        setTransactions(response.data?.data ?? []);
+        setTotalPages(1);
+        setDashbord({
+          incomingSum: response?.data?.incomingSum,
+          outgoingSum: response?.data?.outgoingSum,
+        })
+        setPage(1);
+      } else {
+        console.log('hell o previosu')
+        response = await axios.get(`${baseUrl}/get?p=${page}`);
+        console.log(response)
+        setTransactions(response.data?.data ?? []);
+        setDashbord({
+          incomingSum: response?.data?.incomingSum,
+          outgoingSum: response?.data?.outgoingSum,
+        })
+        setTotalPages(response.data?.total ?? 1);
+      }
     } catch (err) {
-      setError(err.message || "Failed to fetch transactions");
+      const message =
+        err.response?.data?.message ||
+        err.message ||
+        "Failed to fetch transactions";
+      setError(message);
     } finally {
       setLoading(false);
     }
-  };
-
+  }, [page, query]);
   useEffect(() => {
     fetchTransactions();
-    console.log(transactions);
-  }, [page, search]);
+  }, [page, query, fetchTransactions]);
+
+  const handlePrevious = () => {
+    if (!query) {
+      setPage((prev) => Math.max(prev - 1, 1));
+    }
+  };
+
+  const handleNext = () => {
+    if (!query) {
+      setPage((prev) => Math.min(prev + 1, totalPages));
+    }
+    console.log('hell o  next previosu')
+
+  };
 
   return {
     transactions,
@@ -48,9 +72,12 @@ export function useTransactions(initialPage = 1, initialSearch = "") {
     error,
     page,
     setPage,
-    search,
-    setSearch,
     totalPages,
+    query,
+    setQuery,
+    handlePrevious,
+    handleNext,
+    dashboard,
     refetch: fetchTransactions,
   };
 }

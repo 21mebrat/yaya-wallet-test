@@ -9,7 +9,8 @@ const BASE_URL = "https://sandbox.yayawallet.com/api/en/transaction";
 // get paginated transactions
 const getTransactions = async (req, res, next) => {
   try {
-    const page = parseInt(req.query.p, 10) || 1;
+    let page = parseInt(req?.query?.p, 10) || 1;
+    if (page < 0) page = 1
     const endpoint = `/api/en/transaction/find-by-user`;
     const timestamp = Date.now().toString();
     const body = "";

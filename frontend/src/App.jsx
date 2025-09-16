@@ -5,41 +5,60 @@ import { useTransactions } from "./hooks/useTransactions";
 import { Card, CardHeader, CardTitle, CardContent } from "./components/ui/card";
 import { LoadingSpinner } from "./components/LoadingSpinner";
 import DashboardCards from "./components/cards";
-
+import SearchInput from "./components/searchInput";
 export default function App() {
-  const { transactions, loading, error, setSearch } = useTransactions();
+  const {
+    transactions,
+    loading,
+    error,
+    dashboard,
+    page,
+    totalPages,
+    handlePrevious,
+    handleNext,
+  } = useTransactions();
 
   const currentUser = "Surafel Araya";
 
   return (
-    <div className="min-h-screen w-screen bg-gradient-to-br from-gray-50 to-gray-100 p-6">
-      <Card className="rounded-2xl bg-white">
-        <CardHeader className="pb-2">
-          <CardTitle className="text-lg font-semibold text-gray-700">
-            Transaction History
-          </CardTitle>
-        </CardHeader>
+    <Card className="shadow-none border-none">
+      <CardHeader className="pb-2">
+        <CardTitle className="text-lg sm:text-xl font-semibold text-gray-700">
+          Transaction History
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <DashboardCards
+          totalPages={totalPages}
+          dashboard={dashboard}
+        />
+        {loading && (
+          <div className="flex justify-center py-6">
+            <LoadingSpinner message="loading transaction..." />
+          </div>
+        )}
+        {error && !loading && (
+          <p className="text-center text-red-500 py-6">
+            Error loading transactions
+          </p>
+        )}
 
-        <CardContent>
-          <DashboardCards />
-          {loading && <LoadingSpinner />}
+        {!loading && !error && (
 
-          {error && !loading && (
-            <p className="text-center text-red-500 py-6">
-              Error loading transactions
-            </p>
-          )}
-
-          {!loading && !error && (
+          <div>
+            <SearchInput />
             <TransactionTable
               data={transactions}
               columns={transactionColumns}
               currentUser={currentUser}
-              onSearch={setSearch}
+              page={page}
+              totalPages={totalPages}
+              onPrevious={handlePrevious}
+              onNext={handleNext}
             />
-          )}
-        </CardContent>
-      </Card>
-    </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
   );
 }
