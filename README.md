@@ -1,17 +1,39 @@
 # YaYa Wallet — Transactions Dashboard (React + Express)
 
-A secure, responsive dashboard to monitor transactions for a YaYa Wallet account.
-
-- **Frontend:** React (Vite), Tailwind, shadcn/ui, @tanstack/react-table  
-- **Backend:** Node.js, Express, Axios  
-- **Features:** Pagination (`?p=`), search (sender/receiver/cause/ID), incoming/outgoing indicators, responsive table  
-- **Security:** All YaYa API credentials are kept **server-side** in environment variables; the frontend never sees them.
+A **secure**, **responsive**, and **user-friendly** dashboard for monitoring transactions on a YaYa Wallet account.
 
 ---
 
-## What It Does
+## Tech Stack
 
-- Displays transactions in a table with:
+- **Frontend:** React (Vite), Tailwind CSS, shadcn/ui, @tanstack/react-table  
+- **Backend:** Node.js, Express, Axios  
+- **Features:**  
+  - Pagination (`?p=`)  
+  - Search by sender, receiver, cause, or transaction ID  
+  - Visual indicators for incoming/outgoing transactions  
+  - Fully responsive table  
+- **Security:**  
+  - API credentials are stored **server-side** in environment variables  
+  - Frontend never directly accesses sensitive keys
+
+---
+
+## Assumptions
+
+- `.env` file is added **only for testing purposes** to provide API keys and endpoints.  
+  > **Important:** It is not secure to commit `.env` to a repository. In production, API keys should never be exposed.  
+- Current user is hardcoded in the frontend for identifying incoming/outgoing transactions.  
+- The backend proxy is optional but recommended for secure API access.  
+- Top-up transactions are considered incoming (sender = receiver).  
+
+---
+
+## Features & Functionality
+
+The dashboard provides a clean, intuitive interface to explore transactions:
+
+- **Transaction Table:** Displays all relevant details:
   - Transaction ID  
   - Sender  
   - Receiver  
@@ -19,39 +41,26 @@ A secure, responsive dashboard to monitor transactions for a YaYa Wallet account
   - Currency  
   - Cause  
   - Created At  
-  - **Incoming vs Outgoing**:  
-    - Incoming → green indicator (receiver is current user or top-up)  
-    - Outgoing → red indicator (receiver is not current user)  
-- **Responsive**: mobile-friendly, clean layout  
+- **Incoming vs Outgoing:**  
+  - **Incoming:** Green indicator (receiver is current user or top-up transaction)  
+  - **Outgoing:** Red indicator (receiver is not current user)  
+- **Search:** Filter transactions quickly by sender, receiver, cause, or ID  
+- **Pagination:** Navigate through large sets of transactions easily  
+- **Responsive Design:** Optimized for mobile, tablet, and desktop screens  
+- **Loading & Error Handling:** Clear feedback while fetching data or when errors occur  
 
 ---
 
-yaml
-Copy
-Edit
+## Setup & Run
 
-- API keys and secrets **never touch the browser**.  
-- Frontend communicates only with our **backend proxy**.  
-- Backend handles YaYa Wallet API calls securely with proper headers.  
-- Hook (`useTransactions`) centralizes data fetching and state → table stays **presentational only**.
+### 1. Environment Variables
 
----
-Backend attaches the required auth headers securely.  
+Create a `.env` file in the root of your project:
 
----
+```env
+# Frontend
+VITE_BASE_URL=https://sandbox.yayawallet.com/api/en/transaction
 
-## Setup & Running
-
-### Backend
-```bash
-cd backend
-npm install
-npm start
-
-
-### frontend
-```bash
-cd frontend
-npm install
-npm run dev
-
+# Backend (optional proxy)
+API_KEY=key-test_13817e87-33a9-4756-82e0-e6ac74be5f77
+API_SECRET=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...
